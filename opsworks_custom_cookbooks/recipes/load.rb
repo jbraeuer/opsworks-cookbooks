@@ -1,6 +1,10 @@
 if node[:opsworks_custom_cookbooks][:enabled]
   if node["opsworks"]["always_update_cookbooks"] == true
-    puts "Always update cookbooks ENABLED"
+    log "Always update cookbooks ENABLED"
+    include_recipe "opsworks_custom_cookbooks::update"
+  end
+  if ["setup", "configure"].include? node["opsworks"]["activity"]
+    log "Update cookbooks ENABLED for command #{node["opsworks"]["activity"]}"
     include_recipe "opsworks_custom_cookbooks::update"
   end
   include_recipe "opsworks_custom_cookbooks::checkout"
